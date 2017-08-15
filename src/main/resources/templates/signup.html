@@ -48,14 +48,14 @@
 </head>
 <body>
     <div class="container">
-        <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <input id="user_login" type="text" data-toggle="tooltip" class="input-block-level" placeholder="Phone number" />
-            <input id="user_pass" type="password" data-toggle="tooltip" clss="input-block-level" placeholder="Password" />
+        <form class="form-signin" th:action="@{user/signup.do}" th:object="${user}" method="post">
+            <h2 class="form-signin-heading">Please sign up</h2>
+            <input type="text" th:field="*{userLogin}" class="input-block-level" placeholder="Phone number" />
+            <input type="password" th:field="*{userPass}" clss="input-block-level" placeholder="Password" />
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"/>Remember me
             </label>
-            <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+            <button class="btn btn-large btn-primary" type="submit">Sign up</button>
         </form>
     </div>
     <script th:src="@{http://code.jquery.com/jquery.js}"></script>

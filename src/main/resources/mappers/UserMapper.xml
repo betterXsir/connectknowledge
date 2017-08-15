@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.snails.connectknowledge.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.hzh.snails.connectknowledge.domain.User">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_login" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_pass" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_nickname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_registered" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="user_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, user_login, user_pass, user_nickname, user_email, user_registered, user_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ck_users
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ck_users
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.User">
+    insert into ck_users (ID, user_login, user_pass, 
+      user_nickname, user_email, user_registered, 
+      user_status)
+    values (#{id,jdbcType=BIGINT}, #{userLogin,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
+      #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, now(),
+      #{userStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.User">
+    insert into ck_users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userLogin != null">
+        user_login,
+      </if>
+      <if test="userPass != null">
+        user_pass,
+      </if>
+      <if test="userNickname != null">
+        user_nickname,
+      </if>
+      <if test="userEmail != null">
+        user_email,
+      </if>
+      <if test="userRegistered != null">
+        user_registered,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userLogin != null">
+        #{userLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null">
+        #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userRegistered != null">
+        now(),
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.User">
+    update ck_users
+    <set>
+      <if test="userLogin != null">
+        user_login = #{userLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null">
+        user_pass = #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userRegistered != null">
+        user_registered = #{userRegistered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.User">
+    update ck_users
+    set user_login = #{userLogin,jdbcType=VARCHAR},
+      user_pass = #{userPass,jdbcType=VARCHAR},
+      user_nickname = #{userNickname,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_registered = #{userRegistered,jdbcType=TIMESTAMP},
+      user_status = #{userStatus,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
