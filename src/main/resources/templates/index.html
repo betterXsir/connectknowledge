@@ -78,11 +78,21 @@
     <link th:href="@{css/bootstrap-responsive.css}" rel="stylesheet" />
 </head>
 <body>
-    <div class="navbar navbar-fixed-top">
+    <div id="topline" class="navbar navbar-fixed-top" th:with="res=${session.serverResponse}">
         <div class="navbar-inner">
             <ul class="nav pull-right">
-                <li><a th:href="@{signin.html}">Login</a></li>
-                <li class="active"><a th:href="@{signup.html}">Register</a></li>
+                <li th:if="${res}==null or ${res.status}!=0"><a th:href="@{signin.html}">Login</a></li>
+                <li th:if="${res}==null or ${res.status}!=0" class="active"><a th:href="@{signup.html}">Register</a></li>
+                <li class="dropdown" th:if="${res} and ${res.status}==0">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="display: inline-block; position: relative; padding: 5px 5px 0px 5px"><img th:src="@{img/headimg.jpg}" style="width: 30px;height: 30px; border-radius: 50%; display: inline-block;"/><i style="width: 5px; height: 5px; position: relative; left:3px; top:0px; border-top: 5px solid black; border-bottom: 5px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; font-size: 0;"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">我的主页</a></li>
+                        <li><a href="#">收藏的文章</a></li>
+                        <li><a href="#">喜欢的文章</a></li>
+                        <li><a href="#">设置</a></li>
+                        <li><a href="#">退出</a></li>
+                    </ul>
+                </li>
                 <li><a href="#contact">Write essay</a></li>
             </ul>
             <div class="container">

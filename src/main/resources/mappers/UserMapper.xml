@@ -21,6 +21,13 @@
     from ck_users
     where ID = #{id,jdbcType=BIGINT}
   </select>
+  
+  <select id="checkUserLogin" parameterType="java.lang.String" resultType="int">
+    SELECT COUNT(1)
+    FROM ck_users
+    WHERE user_login = #{userLogin}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ck_users
     where ID = #{id,jdbcType=BIGINT}
