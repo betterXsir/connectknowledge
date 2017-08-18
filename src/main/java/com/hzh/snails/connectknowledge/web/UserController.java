@@ -45,4 +45,10 @@ public class UserController {
     public String signIn(@ModelAttribute User user){
         return userService.signIn(user);
     }
+
+    @RequestMapping(value = "logout.do", method = RequestMethod.GET)
+    public String logout(HttpSession session){
+        session.removeAttribute("serverResponse");
+        return "redirect:/index";
+    }
 }

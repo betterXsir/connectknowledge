@@ -48,16 +48,62 @@
 </head>
 <body>
     <div class="container">
-        <form class="form-signin" th:action="@{user/signup.do}" th:object="${user}" method="post">
-            <h2 class="form-signin-heading">Please sign up</h2>
-            <input type="text" th:field="*{userLogin}" class="input-block-level" placeholder="Phone number" />
-            <input type="password" th:field="*{userPass}" clss="input-block-level" placeholder="Password" />
-            <label class="checkbox">
-                <input type="checkbox" value="remember-me"/>Remember me
-            </label>
-            <button class="btn btn-large btn-primary" type="submit">Sign up</button>
+        <form data-toggle="validator" role="form" class="form-signin" th:object="${user}">
+            <!--<h2 class="form-signin-heading">Please sign up</h2>-->
+            <div class="form-group">
+                <label for="inputName" class="control-label">Name</label>
+                <input type="text" id="inputName" th:field="*{userLogin}" class="input-block-level" placeholder="Phone number" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="control-label">Password</label>
+                <div class="form-inline row">
+                    <div class="form-group col-sm-6">
+                        <input type="password" class="form-control" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z]{6,10}$" id="inputPassword" th:field="*{userPass}" placeholder="Password" required="required"/>
+                        <div class="help-block">密码必须为包含6-10位数字和字母</div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required="required"/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me"/>Remember me
+                </label>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-large btn-primary" id="signupbtn" type="submit" onclick="ajax_signup()">Sign up</button>
+            </div>
         </form>
     </div>
+    <script th:inline="javascript">
+        function ajax_signup(){
+            var user = [[${user}]]
+            var userLogin = $("#inputName").val()
+            var userPass = $("#inputPassword").val()
+            var userPassConfirm = $("#inputPasswordConfirm").val()
+            if(userPass != userPassConfirm) {
+                window.alert("两次输入的密码不同.")
+            }
+            var user = {userLogin:$("#inputName").value,userPass:$("#inputPassword").value}
+            $.ajax({
+                url:"/user/signup.do",
+                data:user,
+                dataType:"json",
+                method:"post"
+            }).done(function(data) {
+                if(data.status == 0){
+                    window.location.href="/index"
+                }
+                else{
+                    window.alert("登录失败: "+data.msg);
+                }
+            }).fail(function (xhr, status) {
+                window.alert("失败: " + xhr.status + ", 原因: " + status)
+            })
+        }
+    </script>
     <script th:src="@{http://code.jquery.com/jquery.js}"></script>
     <script th:src="@{js/bootstrap.js}"></script>
 </body>

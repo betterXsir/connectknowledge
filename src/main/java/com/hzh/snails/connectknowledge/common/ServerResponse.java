@@ -1,10 +1,9 @@
 package com.hzh.snails.connectknowledge.common;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mysql.fabric.Server;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerResponse<T> {
     private int status;
     private String msg;

@@ -20,6 +20,7 @@ public class GreetingController {
         }
         return "index";
     }
+
     @GetMapping("/signin")
     public String signin(Model model){
         model.addAttribute("user", new User());
@@ -29,5 +30,15 @@ public class GreetingController {
     public String singup(Model model){
         model.addAttribute("user", new User());
         return "signup";
+    }
+
+    @GetMapping("/setting")
+    public String setting(Model model){
+        return "setting";
+    }
+
+    @GetMapping("/signup1")
+    public String singup(){
+        return "signup1";
     }
 }
