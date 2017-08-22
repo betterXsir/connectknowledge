@@ -1,6 +1,8 @@
 package com.hzh.snails.connectknowledge.dao;
 
 import com.hzh.snails.connectknowledge.domain.User;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
@@ -12,6 +14,8 @@ public interface UserMapper {
     User selectByPrimaryKey(Long id);
 
     int checkUserLogin(String userLogin);
+
+    User checkIdentity(@Param("userLogin") String userLogin, @Param("userPass") String userPass);
 
     int updateByPrimaryKeySelective(User record);
 

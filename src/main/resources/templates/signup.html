@@ -48,17 +48,17 @@
 </head>
 <body>
     <div class="container">
-        <form data-toggle="validator" role="form" class="form-signin" th:object="${user}">
+        <form data-toggle="validator" role="form" class="form-signin">
             <!--<h2 class="form-signin-heading">Please sign up</h2>-->
             <div class="form-group">
                 <label for="inputName" class="control-label">Name</label>
-                <input type="text" id="inputName" th:field="*{userLogin}" class="input-block-level" placeholder="Phone number" required="required"/>
+                <input type="text" id="inputName" class="input-block-level" placeholder="Phone number" required="required"/>
             </div>
             <div class="form-group">
                 <label for="inputPassword" class="control-label">Password</label>
                 <div class="form-inline row">
                     <div class="form-group col-sm-6">
-                        <input type="password" class="form-control" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z]{6,10}$" id="inputPassword" th:field="*{userPass}" placeholder="Password" required="required"/>
+                        <input type="password" class="form-control" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z]{6,10}$" id="inputPassword" placeholder="Password" required="required"/>
                         <div class="help-block">密码必须为包含6-10位数字和字母</div>
                     </div>
                     <div class="form-group col-sm-6">
@@ -79,14 +79,14 @@
     </div>
     <script th:inline="javascript">
         function ajax_signup(){
-            var user = [[${user}]]
+//            var user = [[${user}]]
             var userLogin = $("#inputName").val()
             var userPass = $("#inputPassword").val()
             var userPassConfirm = $("#inputPasswordConfirm").val()
             if(userPass != userPassConfirm) {
                 window.alert("两次输入的密码不同.")
             }
-            var user = {userLogin:$("#inputName").value,userPass:$("#inputPassword").value}
+            var user = {userLogin:userLogin,userPass:userPass}
             $.ajax({
                 url:"/user/signup.do",
                 data:user,

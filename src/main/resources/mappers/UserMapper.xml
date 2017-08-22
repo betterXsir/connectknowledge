@@ -27,6 +27,13 @@
     FROM ck_users
     WHERE user_login = #{userLogin}
   </select>
+
+  <select id="checkIdentity" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM ck_users
+    WHERE user_login = #{userLogin} AND user_pass = #{userPass}
+  </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ck_users

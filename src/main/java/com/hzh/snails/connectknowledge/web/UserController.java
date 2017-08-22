@@ -1,5 +1,6 @@
 package com.hzh.snails.connectknowledge.web;
 
+import com.hzh.snails.connectknowledge.common.ResponseCode;
 import com.hzh.snails.connectknowledge.common.ServerResponse;
 import com.hzh.snails.connectknowledge.dao.UserMapper;
 import com.hzh.snails.connectknowledge.domain.User;
@@ -7,10 +8,8 @@ import com.hzh.snails.connectknowledge.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,29 +25,43 @@ public class UserController {
     private UserServiceImpl userService;
 
     @RequestMapping(value = "signup.do", method = RequestMethod.POST)
-    public String signUp(@ModelAttribute User user, HttpSession session, HttpServletRequest request){
+    @ResponseBody
+    public ServerResponse signUp(@ModelAttribute User user, HttpSession session){
         ServerResponse response = userService.signUp(user);
-        Cookie[] cookies = request.getCookies();
-        if (null==cookies) {//如果没有cookie数组
-            System.out.println("没有cookie");
-        } else {
-            for(Cookie cookie : cookies){
-                System.out.println("cookieName:"+cookie.getName()+",cookieValue:"+ cookie.getValue());
-            }
+        if(response.getStatus() == 0) {
+            session.setAttribute("user", response.getData());
         }
-        System.out.println("--------serverResponse: " + response.getStatus() + "----" + response.getMsg());
-        session.setAttribute("serverResponse", response);
-        return "redirect:/index";
+        return response;
     }
 
     @RequestMapping(value = "signin.do", method = RequestMethod.POST)
-    public String signIn(@ModelAttribute User user){
-        return userService.signIn(user);
+    @ResponseBody
+    public ServerResponse signIn(@ModelAttribute User user, HttpSession session){
+        ServerResponse response = userService.signIn(user);
+        if(response.getStatus() == 0) {
+            session.setAttribute("user", response.getData());
+        }
+        return response;
     }
 
     @RequestMapping(value = "logout.do", method = RequestMethod.GET)
     public String logout(HttpSession session){
-        session.removeAttribute("serverResponse");
+        if(session.getAttribute("user") != null)
+            session.removeAttribute("user");
         return "redirect:/index";
+    }
+
+    @RequestMapping(value = "setAvatar.do", method = RequestMethod.POST)
+    public ServerResponse setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
+        ServerResponse res = null;
+        User user = (User)session.getAttribute("user");
+        if(user == null){
+            res = ServerResponse.createByErrorMessage("Need Login");
+            res.setStatus(ResponseCode.NEED_LOGIN.getCode());
+        }
+        else {
+            res = userService.setAvatar(file, user);
+        }
+        return res;
     }
 }

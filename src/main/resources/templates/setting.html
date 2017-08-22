@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="~{index}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
+    <head th:replace="header::starter"></head>
+    <link th:src="@{css/fileinput.min.css}" rel="stylesheet"/>
+    <style th:fragment="headstyle">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
 </head>
 <body>
-
+    <div th:replace="header::content"></div>
+    <div class="container">
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                <ul class="nav nav-list bs-docs-sidenav affix">
+                    <li class="active"><a href="#"><i class="icon-chevron-right"></i>基础设置</a></li>
+                    <li><a href="#"><i class="icon-chevron-right"></i>个人资料</a></li>
+                    <li><a href="#"><i class="icon-chevron-right"></i>黑人名单</a></li>
+                    <li><a href="#"><i class="icon-chevron-right"></i>账号管理</a></li>
+                </ul>
+            </div>
+            <div class="span9">
+                <form method="post" enctype="multipart/form-data" th:action="@{/user/setAvatar.do}">
+                    <table>
+                        <tr>
+                            <td>
+                                <div><img th:href="@{user/getAvatar}" style="width: 50px;height: 50px;margin-right: 50px;" /></div>
+                            </td>
+                            <td><a class="btn btn-hollow"><input id="inputAvatar" type="file" name="file" />选择头像</a></td>
+                            <td></td><td><input type="submit" onclick="ajax_setavatar()" value="Upload" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{http://code.jquery.com/jquery.js}"></script>
+    <script th:src="@{js/bootstrap.js}"></script>
+    <script th:src="@{js/fileinput.min.js}"></script>
 </body>
 </html>

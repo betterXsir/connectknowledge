@@ -23,12 +23,10 @@ public class GreetingController {
 
     @GetMapping("/signin")
     public String signin(Model model){
-        model.addAttribute("user", new User());
         return "signin";
     }
     @GetMapping("/signup")
     public String singup(Model model){
-        model.addAttribute("user", new User());
         return "signup";
     }
 

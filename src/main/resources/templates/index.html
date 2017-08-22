@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Bootstrap, from Twitter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-
-    <link th:href="@{css/bootstrap.css}" rel="stylesheet" />
+    <head th:replace="header::starter"></head>
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -78,48 +72,8 @@
     <link th:href="@{css/bootstrap-responsive.css}" rel="stylesheet" />
 </head>
 <body>
-    <div id="topline" class="navbar navbar-fixed-top" th:with="res=${session.serverResponse}">
-        <div class="navbar-inner">
-            <ul class="nav pull-right">
-                <li th:if="${res}==null or ${res.status}!=0"><a th:href="@{signin.html}">Login</a></li>
-                <li th:if="${res}==null or ${res.status}!=0" class="active"><a th:href="@{signup.html}">Register</a></li>
-                <li class="dropdown" th:if="${res} and ${res.status}==0">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="display: inline-block; position: relative; padding: 5px 5px 0px 5px"><img th:src="@{img/headimg.jpg}" style="width: 30px;height: 30px; border-radius: 50%; display: inline-block;"/><i style="width: 5px; height: 5px; position: relative; left:3px; top:0px; border-top: 5px solid black; border-bottom: 5px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; font-size: 0;"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">我的主页</a></li>
-                        <li><a href="#">收藏的文章</a></li>
-                        <li><a href="#">喜欢的文章</a></li>
-                        <li><a th:href="@{/setting}">设置</a></li>
-                        <li><a th:href="@{/user/logout.do}">退出</a></li>
-                    </ul>
-                </li>
-                <li><a href="#contact">Write essay</a></li>
-            </ul>
-            <div class="container">
-                <a class="brand" href="#">CK</a>
-                <div class="navbar-header">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                </div>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Download</a></li>
-                        <li class="search">
-                            <form class="navbar-search">
-                                <input type="text" class="search-query" placeholder="Search" />
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="containe">
+    <div th:replace="header::content"></div>
+    <div class="container">
         <div class="row-fluid">
             <div class="span3">
                 <div class="well sidebar-nav">
