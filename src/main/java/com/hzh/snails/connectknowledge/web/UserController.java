@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InvalidObjectException;
 
 
 @Controller
@@ -52,7 +54,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "setAvatar.do", method = RequestMethod.POST)
-    public ServerResponse setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
+    public String setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
         ServerResponse res = null;
         User user = (User)session.getAttribute("user");
         if(user == null){
@@ -60,8 +62,12 @@ public class UserController {
             res.setStatus(ResponseCode.NEED_LOGIN.getCode());
         }
         else {
-            res = userService.setAvatar(file, user);
+            try {
+                res = userService.setAvatar(file, user);
+            }catch(IOException var1){
+                res = ServerResponse.createByErrorMessage(var1.getMessage());
+            }
         }
-        return res;
+        return "redirect:/setting";
     }
 }

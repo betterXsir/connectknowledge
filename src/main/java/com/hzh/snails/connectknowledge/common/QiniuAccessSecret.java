@@ -1,5 +1,7 @@
 package com.hzh.snails.connectknowledge.common;
 
+import java.util.LinkedHashMap;
+
 /**
  * Created by huzhenhua on 2017/8/22.
  */
