@@ -27,11 +27,13 @@
                     <table>
                         <tr>
                             <td>
-                                <div><img th:src="@{'http://ov2ww7h39.bkt.clouddn.com/image/avatar/' + ${session.user.userLogin} + '.jpg'}" style="width: 50px;height: 50px;margin-right: 50px;" /></div>
+                                <div><img th:src="@{'http://ov2ww7h39.bkt.clouddn.com/' + ${session.user.userAvatar}}" style="width: 50px;height: 50px;margin-right: 50px;" /></div>
+                            </td>
+                            <td>
+                                <input type="file" name="file" />
+                                <input class="button" type="submit" value="Upload" />
                             </td>
                         </tr>
-                        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-                        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
                     </table>
                 </form>
             </div>

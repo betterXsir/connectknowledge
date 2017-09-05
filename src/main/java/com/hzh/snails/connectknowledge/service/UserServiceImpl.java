@@ -33,6 +33,7 @@ public class UserServiceImpl {
             return ServerResponse.createByErrorMessage("该用户名已存在");
         }
         user.setUserStatus(1);
+        user.setUserAvatar(QiniuUploadAvatar.filePrefix + "default");
         resultCount = userMapper.insert(user);
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("注册失败");
@@ -55,7 +56,10 @@ public class UserServiceImpl {
     public ServerResponse setAvatar(MultipartFile file, User user) throws IOException{
 
         // TODO: 2017/8/22 上传头像到七牛，存储该头像的url到数据库
-        String filename = user.getUserLogin() + "." + file.getOriginalFilename().split("\\.")[1];
+        String filename = user.getUserLogin();
+        if(file.getSize() == 0){
+            return ServerResponse.createByErrorMessage("空文件");
+        }
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         boolean res = false;
         try {
@@ -66,8 +70,12 @@ public class UserServiceImpl {
         }finally {
             bais.close();
         }
-        if(res)
+        if(res) {
+            System.out.println("=======" + user.getUserAvatar());
+            user.setUserAvatar(QiniuUploadAvatar.filePrefix + filename);
+            userMapper.updateByPrimaryKey(user);
             return ServerResponse.createBySuccess();
+        }
         return ServerResponse.createByErrorMessage("上传失败");
     }
 }

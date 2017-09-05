@@ -9,22 +9,26 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
 public class QiniuUploadAvatar {
-    private static final String filePrefix = "image/avatar/";
+    public static String filePrefix = "image/avatar/";
 
     public static boolean uploadAvatar(String filename, ByteArrayInputStream bais, String bucketName) throws QiniuException{
         Configuration cfg = new Configuration(Zone.zone2());
         UploadManager uploadManager = new UploadManager(cfg);
         String key = filePrefix + filename;
         Auth auth = Auth.create(QiniuAccessSecret.ACCESS_KEY, QiniuAccessSecret.SERCRET_KEY);
-        String upToken = auth.uploadToken(bucketName);
+        StringMap putPolicy = new StringMap();
+        putPolicy.put("scope", "connectknowledge:"+key);
+        String upToken = auth.uploadToken(bucketName,key);
         Response response = uploadManager.put(bais, key, upToken, null, null);
         DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-        if(putRet.key == key)
+        System.out.println("===========putRet" + ":" + putRet.key);
+        if(putRet.key.equals(key))
             return true;
         return false;
     }

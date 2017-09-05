@@ -68,6 +68,7 @@ public class UserController {
                 res = ServerResponse.createByErrorMessage(var1.getMessage());
             }
         }
+        session.setAttribute("user",user);
         return "redirect:/setting";
     }
 }

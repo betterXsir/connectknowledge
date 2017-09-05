@@ -10,10 +10,11 @@
       <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_registered" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="user_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    ID, user_login, user_pass, user_nickname, user_email, user_registered, user_status
+    ID, user_login, user_pass, user_nickname, user_email, user_registered, user_status, user_avatar
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -42,10 +43,10 @@
   <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.User">
     insert into ck_users (ID, user_login, user_pass, 
       user_nickname, user_email, user_registered, 
-      user_status)
+      user_status, user_avatar)
     values (#{id,jdbcType=BIGINT}, #{userLogin,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
       #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, now(),
-      #{userStatus,jdbcType=INTEGER})
+      #{userStatus,jdbcType=INTEGER}, #{userAvatar,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.User">
     insert into ck_users
@@ -71,6 +72,9 @@
       <if test="userStatus != null">
         user_status,
       </if>
+      <if test="userAvatar != null">
+        user_avatar,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -93,6 +97,9 @@
       </if>
       <if test="userStatus != null">
         #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userAvatar != null">
+        #{userAvatar,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -117,6 +124,9 @@
       <if test="userStatus != null">
         user_status = #{userStatus,jdbcType=INTEGER},
       </if>
+      <if test="userAvatar != null">
+        user_avatar = #{userAvatar,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -127,7 +137,8 @@
       user_nickname = #{userNickname,jdbcType=VARCHAR},
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_registered = #{userRegistered,jdbcType=TIMESTAMP},
-      user_status = #{userStatus,jdbcType=INTEGER}
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_avatar = #{userAvatar,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

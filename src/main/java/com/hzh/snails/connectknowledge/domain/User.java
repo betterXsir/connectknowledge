@@ -17,7 +17,9 @@ public class User {
 
     private Integer userStatus;
 
-    public User(Long id, String userLogin, String userPass, String userNickname, String userEmail, Date userRegistered, Integer userStatus) {
+    private String userAvatar;
+
+    public User(Long id, String userLogin, String userPass, String userNickname, String userEmail, Date userRegistered, Integer userStatus, String userAvatar) {
         this.id = id;
         this.userLogin = userLogin;
         this.userPass = userPass;
@@ -25,6 +27,7 @@ public class User {
         this.userEmail = userEmail;
         this.userRegistered = userRegistered;
         this.userStatus = userStatus;
+        this.userAvatar = userAvatar;
     }
 
     public User() {
@@ -85,5 +88,13 @@ public class User {
 
     public void setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 }
