@@ -5,6 +5,7 @@ import com.hzh.snails.connectknowledge.common.QiniuAccessSecret;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
@@ -15,21 +16,24 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
 public class QiniuUploadAvatar {
-    public static String filePrefix = "image/avatar/";
 
-    public static boolean uploadAvatar(String filename, ByteArrayInputStream bais, String bucketName) throws QiniuException{
+    public static DefaultPutRet uploadAvatar(String filename, ByteArrayInputStream bais, String bucketName) throws QiniuException{
+        Auth auth = Auth.create(QiniuAccessSecret.ACCESS_KEY, QiniuAccessSecret.SERCRET_KEY);
         Configuration cfg = new Configuration(Zone.zone2());
         UploadManager uploadManager = new UploadManager(cfg);
-        String key = filePrefix + filename;
-        Auth auth = Auth.create(QiniuAccessSecret.ACCESS_KEY, QiniuAccessSecret.SERCRET_KEY);
-        StringMap putPolicy = new StringMap();
-        putPolicy.put("scope", "connectknowledge:"+key);
+        BucketManager bucketManager = new BucketManager(auth, cfg);
+        String key = null;
+        if(!filename.equals("default.jpeg")){
+            try {
+                bucketManager.delete(bucketName, filename);
+            } catch (QiniuException var) {
+                var.printStackTrace();
+                throw var;
+            }
+        }
         String upToken = auth.uploadToken(bucketName,key);
         Response response = uploadManager.put(bais, key, upToken, null, null);
         DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-        System.out.println("===========putRet" + ":" + putRet.key);
-        if(putRet.key.equals(key))
-            return true;
-        return false;
+        return putRet;
     }
 }

@@ -33,6 +33,7 @@ public class UserController {
         if(response.getStatus() == 0) {
             session.setAttribute("user", response.getData());
         }
+        System.out.println("====signup finished====" + response.getMsg());
         return response;
     }
 
@@ -54,7 +55,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "setAvatar.do", method = RequestMethod.POST)
-    public String setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
+    @ResponseBody
+    public ServerResponse setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
         ServerResponse res = null;
         User user = (User)session.getAttribute("user");
         if(user == null){
@@ -69,6 +71,6 @@ public class UserController {
             }
         }
         session.setAttribute("user",user);
-        return "redirect:/setting";
+        return res;
     }
 }

@@ -33,7 +33,7 @@ public class UserServiceImpl {
             return ServerResponse.createByErrorMessage("该用户名已存在");
         }
         user.setUserStatus(1);
-        user.setUserAvatar(QiniuUploadAvatar.filePrefix + "default");
+        user.setUserAvatar("default.jpeg");
         resultCount = userMapper.insert(user);
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("注册失败");
@@ -61,20 +61,19 @@ public class UserServiceImpl {
             return ServerResponse.createByErrorMessage("空文件");
         }
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-        boolean res = false;
+        DefaultPutRet putRet = null;
         try {
-            res = QiniuUploadAvatar.uploadAvatar(filename, bais, "connectknowledge");
+            putRet = QiniuUploadAvatar.uploadAvatar(user.getUserAvatar(), bais, "connectknowledge");
         }catch (QiniuException var3){
             Response r = var3.response;
             return ServerResponse.createByError(r.toString(),r.bodyString());
         }finally {
             bais.close();
         }
-        if(res) {
-            System.out.println("=======" + user.getUserAvatar());
-            user.setUserAvatar(QiniuUploadAvatar.filePrefix + filename);
+        if(putRet != null && putRet.key != null) {
+            user.setUserAvatar(putRet.key);
             userMapper.updateByPrimaryKey(user);
-            return ServerResponse.createBySuccess();
+            return ServerResponse.createBySuccess(putRet.key);
         }
         return ServerResponse.createByErrorMessage("上传失败");
     }

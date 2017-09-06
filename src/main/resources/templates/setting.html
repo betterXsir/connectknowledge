@@ -8,6 +8,55 @@
             padding-top: 60px;
             padding-bottom: 40px;
         }
+        ._box
+        {
+            position: relative;
+            width: 119px;
+            height: 37px;
+            background-color: #53AD3F;
+            background-image: url(images/bg.png);
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-attachment: scroll;
+            line-height: 37px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 1;
+        }
+        ._box input
+        {
+            position: absolute;
+            width: 119px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 23px;
+            opacity: 0;
+            filter: "alpha(opacity=0)";
+            filter: alpha(opacity=0);
+            -moz-opacity: 0;
+            left: -5px;
+            top: -2px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        td {
+            padding: 20px 0px;
+        }
+        td .setting-title{
+            width: 150px;
+            height: 33px;
+            padding: 20px 0px;
+        }
+
+        tr {
+            margin-top: 20px;
+        }
+
+        .setting-value {
+            margin: 30px 0px 60px;
+        }
     </style>
 </head>
 <body>
@@ -15,30 +64,90 @@
     <div class="container">
         <div class="row">
             <div class="span3 bs-docs-sidebar">
-                <ul class="nav nav-list bs-docs-sidenav affix">
+                <ul class="nav nav-list bs-docs-sidenav affix" style="padding-top: 40px">
                     <li class="active"><a href="#"><i class="icon-chevron-right"></i>基础设置</a></li>
                     <li><a href="#"><i class="icon-chevron-right"></i>个人资料</a></li>
                     <li><a href="#"><i class="icon-chevron-right"></i>黑人名单</a></li>
                     <li><a href="#"><i class="icon-chevron-right"></i>账号管理</a></li>
                 </ul>
             </div>
-            <div class="span9">
-                <form method="post" enctype="multipart/form-data" action="/user/setAvatar.do">
+            <div class="span9" style="padding-top: 40px">
+                <form id="inputAvatar" method="post" enctype="multipart/form-data">
                     <table>
                         <tr>
                             <td>
-                                <div><img th:src="@{'http://ov2ww7h39.bkt.clouddn.com/' + ${session.user.userAvatar}}" style="width: 50px;height: 50px;margin-right: 50px;" /></div>
+                                <div><img id="avatar-content" th:src="@{'http://ov2ww7h39.bkt.clouddn.com/' + ${session.user.userAvatar}}" style="width: 50px;height: 50px;margin-right: 50px;" /></div>
                             </td>
                             <td>
-                                <input type="file" name="file" />
-                                <input class="button" type="submit" value="Upload" />
+                                <div>
+                                    <div class="_box">
+                                        <input id="inputFile" type="file" name="file" />选择图片
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="button" class="btn" style="color: dodgerblue;" value="更改头像" onclick="ajax_setAvatar()" />
+                                </div>
                             </td>
                         </tr>
                     </table>
                 </form>
+                <form data-toggle="validator" style="margin-top: 40px" method="post" enctype="multipart/form-data">
+                    <table>
+                        <tr>
+                            <td class="setting-title">
+                                昵称
+                            </td>
+                            <td>
+                                <input type="text" placeholder="请输入昵称" required="required"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="setting-title">
+                                电子邮件
+                            </td>
+                            <td>
+                                <input type="button" value="发送" class="btn btn-hollow pull-right" />
+                                <input type="email" placeholder="请输入你的常用邮箱" required="required"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btn btn-success setting-value" onclick="ajax_setInfo()" value="保存" />
+                </form>
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        function ajax_setInfo() {
+            
+        }
+        function ajax_setAvatar() {
+            var formData = new FormData();
+            formData.append("file",$("#inputAvatar")[0]);
+            formData.append("name","file");
+            $.ajax({
+                url:"/user/setAvatar.do",
+                data:formData,
+                method:"post",
+                dataType:"json",
+                success:function (data) {
+                    console.log(data);
+                    if(data.status == 0) {
+                        document.getElementById("avatar-head").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
+                        document.getElementById("avatar-content").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
+                    }
+                    else{
+                        alert("fail");
+                    }
+                },
+                error:function () {
+                    alert("error");
+                }
+            })
+        }
+
+    </script>
     <script th:src="@{http://code.jquery.com/jquery.js}"></script>
     <script th:src="@{js/bootstrap.js}"></script>
     <script th:src="@{js/fileinput.min.js}"></script>

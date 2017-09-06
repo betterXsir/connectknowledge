@@ -73,18 +73,20 @@
         function ajax_signin(){
             var user = {userLogin:$("#inputName").val(), userPass:$("#inputPass").val()}
             $.ajax({
-                url:"/user/signin.do",
-                data:user,
-                dataTpye:"json",
-                method:"post"
-            }).done(function (data) {
-                if(data.status == 0){
-                    window.location.href="/index"
-                }else{
-                    window.alert("登录失败: " + data.msg)
+                url: "/user/signin.do",
+                data: user,
+                dataTpye: "json",
+                method: "post",
+                success: function (data) {
+                    if (data.status == 0) {
+                        window.location.href = "/index"
+                    } else {
+                        window.alert("登录失败: " + data.msg)
+                    }
+                },
+                error: function () {
+                    window.alert("请求错误");
                 }
-            }).fail(function (xhr, status){
-                window.alert("失败: " + xhr.status + ", 原因: " + status)
             })
         }
     </script>
