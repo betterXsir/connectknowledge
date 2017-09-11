@@ -113,7 +113,7 @@
                             </td>
                         </tr>
                     </table>
-                    <input type="submit" class="btn btn-success setting-value" onclick="ajax_setInfo()" value="保存" />
+                    <input class="btn btn-success setting-value" onclick="ajax_setInfo()" value="保存" />
                 </form>
             </div>
         </div>
@@ -127,7 +127,7 @@
     </div>
     <script th:inline="javascript">
         function ajax_setInfo() {
-            var data = {"userEmail":$("#inputEmail"), "userNickname":$("#inputNickname")}
+            var data = {"userEmail":$("#inputEmail").val(), "userNickname":$("#inputNickname").val()}
             $.ajax({
                 url:"/user/setInfo.do",
                 data:data,
@@ -147,18 +147,18 @@
             })
         }
         function ajax_setAvatar() {
-            var formData = new FormData();
-            formData.append("file",$("#inputAvatar")[0]);
-            formData.append("name","file");
+            var formData = new FormData($("#inputAvatar")[0]);
             $.ajax({
                 url:"/user/setAvatar.do",
                 data:formData,
                 method:"post",
                 dataType:"json",
+                processData:false,
+                contentType:false,
                 success:function (data) {
                     if(data.status == 0) {
-                        document.getElementById("avatar-head").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
-                        document.getElementById("avatar-content").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
+                        document.getElementById("avatar-head").setAttribute("src","http://ov2ww7h39.bkt.clouddn.com/" + data.data);
+                        document.getElementById("avatar-content").setAttribute("src","http://ov2ww7h39.bkt.clouddn.com/" + data.data);
                     }
                     else{
                         alert("fail");

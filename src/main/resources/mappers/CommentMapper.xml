@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.snails.connectknowledge.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.hzh.snails.connectknowledge.domain.Comment">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_author" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_post" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="comment_parent" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hzh.snails.connectknowledge.domain.Comment">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_author" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_post" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="comment_parent" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="comment_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="comment_content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, comment_author, comment_post, comment_date, comment_parent, comment_likes
+  </sql>
+  <sql id="Blob_Column_List">
+    comment_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ck_comments
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ck_comments
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.Comment">
+    insert into ck_comments (ID, comment_author, comment_post, 
+      comment_date, comment_parent, comment_likes, 
+      comment_content)
+    values (#{id,jdbcType=BIGINT}, #{commentAuthor,jdbcType=BIGINT}, #{commentPost,jdbcType=BIGINT}, 
+      #{commentDate,jdbcType=TIMESTAMP}, #{commentParent,jdbcType=BIGINT}, #{commentLikes,jdbcType=INTEGER}, 
+      #{commentContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.Comment">
+    insert into ck_comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="commentAuthor != null">
+        comment_author,
+      </if>
+      <if test="commentPost != null">
+        comment_post,
+      </if>
+      <if test="commentDate != null">
+        comment_date,
+      </if>
+      <if test="commentParent != null">
+        comment_parent,
+      </if>
+      <if test="commentLikes != null">
+        comment_likes,
+      </if>
+      <if test="commentContent != null">
+        comment_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="commentAuthor != null">
+        #{commentAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="commentPost != null">
+        #{commentPost,jdbcType=BIGINT},
+      </if>
+      <if test="commentDate != null">
+        #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentParent != null">
+        #{commentParent,jdbcType=BIGINT},
+      </if>
+      <if test="commentLikes != null">
+        #{commentLikes,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null">
+        #{commentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.Comment">
+    update ck_comments
+    <set>
+      <if test="commentAuthor != null">
+        comment_author = #{commentAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="commentPost != null">
+        comment_post = #{commentPost,jdbcType=BIGINT},
+      </if>
+      <if test="commentDate != null">
+        comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentParent != null">
+        comment_parent = #{commentParent,jdbcType=BIGINT},
+      </if>
+      <if test="commentLikes != null">
+        comment_likes = #{commentLikes,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null">
+        comment_content = #{commentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzh.snails.connectknowledge.domain.Comment">
+    update ck_comments
+    set comment_author = #{commentAuthor,jdbcType=BIGINT},
+      comment_post = #{commentPost,jdbcType=BIGINT},
+      comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      comment_parent = #{commentParent,jdbcType=BIGINT},
+      comment_likes = #{commentLikes,jdbcType=INTEGER},
+      comment_content = #{commentContent,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.Comment">
+    update ck_comments
+    set comment_author = #{commentAuthor,jdbcType=BIGINT},
+      comment_post = #{commentPost,jdbcType=BIGINT},
+      comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      comment_parent = #{commentParent,jdbcType=BIGINT},
+      comment_likes = #{commentLikes,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

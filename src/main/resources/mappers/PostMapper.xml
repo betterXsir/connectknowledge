@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.snails.connectknowledge.dao.PostMapper">
+  <resultMap id="BaseResultMap" type="com.hzh.snails.connectknowledge.domain.Post">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="post_author" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="post_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="post_modified" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="post_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="comment_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_mime_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_label" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_watchs" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_comments" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="post_author" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="post_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="post_modified" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="post_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="comment_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_mime_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="post_label" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_watchs" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_comments" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="post_title" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="post_excerpt" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, post_author, post_date, post_modified, post_status, comment_status, post_type, 
+    post_mime_type, post_label, post_watchs, post_likes, post_comments
+  </sql>
+  <sql id="Blob_Column_List">
+    post_content, post_title, post_excerpt
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ck_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ck_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
+    insert into ck_posts (ID, post_author, post_date, 
+      post_modified, post_status, comment_status, 
+      post_type, post_mime_type, post_label, 
+      post_watchs, post_likes, post_comments, 
+      post_content, post_title, post_excerpt
+      )
+    values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, #{postDate,jdbcType=TIMESTAMP}, 
+      #{postModified,jdbcType=TIMESTAMP}, #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR}, 
+      #{postType,jdbcType=VARCHAR}, #{postMimeType,jdbcType=VARCHAR}, #{postLabel,jdbcType=INTEGER}, 
+      #{postWatchs,jdbcType=INTEGER}, #{postLikes,jdbcType=INTEGER}, #{postComments,jdbcType=INTEGER}, 
+      #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, #{postExcerpt,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
+    insert into ck_posts
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="postAuthor != null">
+        post_author,
+      </if>
+      <if test="postDate != null">
+        post_date,
+      </if>
+      <if test="postModified != null">
+        post_modified,
+      </if>
+      <if test="postStatus != null">
+        post_status,
+      </if>
+      <if test="commentStatus != null">
+        comment_status,
+      </if>
+      <if test="postType != null">
+        post_type,
+      </if>
+      <if test="postMimeType != null">
+        post_mime_type,
+      </if>
+      <if test="postLabel != null">
+        post_label,
+      </if>
+      <if test="postWatchs != null">
+        post_watchs,
+      </if>
+      <if test="postLikes != null">
+        post_likes,
+      </if>
+      <if test="postComments != null">
+        post_comments,
+      </if>
+      <if test="postContent != null">
+        post_content,
+      </if>
+      <if test="postTitle != null">
+        post_title,
+      </if>
+      <if test="postExcerpt != null">
+        post_excerpt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="postAuthor != null">
+        #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null">
+        #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postModified != null">
+        #{postModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null">
+        #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null">
+        #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postType != null">
+        #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="postMimeType != null">
+        #{postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="postLabel != null">
+        #{postLabel,jdbcType=INTEGER},
+      </if>
+      <if test="postWatchs != null">
+        #{postWatchs,jdbcType=INTEGER},
+      </if>
+      <if test="postLikes != null">
+        #{postLikes,jdbcType=INTEGER},
+      </if>
+      <if test="postComments != null">
+        #{postComments,jdbcType=INTEGER},
+      </if>
+      <if test="postContent != null">
+        #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null">
+        #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null">
+        #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
+    update ck_posts
+    <set>
+      <if test="postAuthor != null">
+        post_author = #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null">
+        post_date = #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postModified != null">
+        post_modified = #{postModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null">
+        post_status = #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null">
+        comment_status = #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postType != null">
+        post_type = #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="postMimeType != null">
+        post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="postLabel != null">
+        post_label = #{postLabel,jdbcType=INTEGER},
+      </if>
+      <if test="postWatchs != null">
+        post_watchs = #{postWatchs,jdbcType=INTEGER},
+      </if>
+      <if test="postLikes != null">
+        post_likes = #{postLikes,jdbcType=INTEGER},
+      </if>
+      <if test="postComments != null">
+        post_comments = #{postComments,jdbcType=INTEGER},
+      </if>
+      <if test="postContent != null">
+        post_content = #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null">
+        post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null">
+        post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
+    update ck_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_modified = #{postModified,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_type = #{postType,jdbcType=VARCHAR},
+      post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      post_label = #{postLabel,jdbcType=INTEGER},
+      post_watchs = #{postWatchs,jdbcType=INTEGER},
+      post_likes = #{postLikes,jdbcType=INTEGER},
+      post_comments = #{postComments,jdbcType=INTEGER},
+      post_content = #{postContent,jdbcType=LONGVARCHAR},
+      post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.Post">
+    update ck_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_modified = #{postModified,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_type = #{postType,jdbcType=VARCHAR},
+      post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      post_label = #{postLabel,jdbcType=INTEGER},
+      post_watchs = #{postWatchs,jdbcType=INTEGER},
+      post_likes = #{postLikes,jdbcType=INTEGER},
+      post_comments = #{postComments,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.snails.connectknowledge.dao.LikeMapper">
+  <resultMap id="BaseResultMap" type="com.hzh.snails.connectknowledge.domain.Like">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="like_author" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="like_post" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="like_comment" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="like_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, like_author, like_post, like_comment, like_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ck_likes
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ck_likes
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.Like">
+    insert into ck_likes (ID, like_author, like_post, 
+      like_comment, like_date)
+    values (#{id,jdbcType=BIGINT}, #{likeAuthor,jdbcType=BIGINT}, #{likePost,jdbcType=BIGINT}, 
+      #{likeComment,jdbcType=BIGINT}, #{likeDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.Like">
+    insert into ck_likes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="likeAuthor != null">
+        like_author,
+      </if>
+      <if test="likePost != null">
+        like_post,
+      </if>
+      <if test="likeComment != null">
+        like_comment,
+      </if>
+      <if test="likeDate != null">
+        like_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="likeAuthor != null">
+        #{likeAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="likePost != null">
+        #{likePost,jdbcType=BIGINT},
+      </if>
+      <if test="likeComment != null">
+        #{likeComment,jdbcType=BIGINT},
+      </if>
+      <if test="likeDate != null">
+        #{likeDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.Like">
+    update ck_likes
+    <set>
+      <if test="likeAuthor != null">
+        like_author = #{likeAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="likePost != null">
+        like_post = #{likePost,jdbcType=BIGINT},
+      </if>
+      <if test="likeComment != null">
+        like_comment = #{likeComment,jdbcType=BIGINT},
+      </if>
+      <if test="likeDate != null">
+        like_date = #{likeDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.Like">
+    update ck_likes
+    set like_author = #{likeAuthor,jdbcType=BIGINT},
+      like_post = #{likePost,jdbcType=BIGINT},
+      like_comment = #{likeComment,jdbcType=BIGINT},
+      like_date = #{likeDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

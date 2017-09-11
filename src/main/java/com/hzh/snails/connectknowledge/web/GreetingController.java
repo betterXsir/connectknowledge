@@ -35,8 +35,9 @@ public class GreetingController {
         return "setting";
     }
 
-    @GetMapping("/signup1")
-    public String singup(){
-        return "signup1";
+    @GetMapping("/writer")
+    public String writer(){
+        return "writer";
     }
+
 }

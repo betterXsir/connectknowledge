@@ -1,5 +1,6 @@
 package com.hzh.snails.connectknowledge.web;
 
+import com.hzh.snails.connectknowledge.common.Const;
 import com.hzh.snails.connectknowledge.common.ResponseCode;
 import com.hzh.snails.connectknowledge.common.ServerResponse;
 import com.hzh.snails.connectknowledge.dao.UserMapper;
@@ -31,7 +32,7 @@ public class UserController {
     public ServerResponse signUp(@ModelAttribute User user, HttpSession session){
         ServerResponse response = userService.signUp(user);
         if(response.getStatus() == 0) {
-            session.setAttribute("user", response.getData());
+            session.setAttribute(Const.CURRENT_USER, response.getData());
         }
         System.out.println("====signup finished====" + response.getMsg());
         return response;
@@ -42,15 +43,15 @@ public class UserController {
     public ServerResponse signIn(@ModelAttribute User user, HttpSession session){
         ServerResponse response = userService.signIn(user);
         if(response.getStatus() == 0) {
-            session.setAttribute("user", response.getData());
+            session.setAttribute(Const.CURRENT_USER, response.getData());
         }
         return response;
     }
 
     @RequestMapping(value = "logout.do", method = RequestMethod.GET)
     public String logout(HttpSession session){
-        if(session.getAttribute("user") != null)
-            session.removeAttribute("user");
+        if(session.getAttribute(Const.CURRENT_USER) != null)
+            session.removeAttribute(Const.CURRENT_USER);
         return "redirect:/index";
     }
 
@@ -58,7 +59,7 @@ public class UserController {
     @ResponseBody
     public ServerResponse setAvatar(@RequestParam("file") MultipartFile file, HttpSession session){
         ServerResponse res = null;
-        User user = (User)session.getAttribute("user");
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             res = ServerResponse.createByErrorMessage("Need Login");
             res.setStatus(ResponseCode.NEED_LOGIN.getCode());
@@ -70,7 +71,27 @@ public class UserController {
                 res = ServerResponse.createByErrorMessage(var1.getMessage());
             }
         }
-        session.setAttribute("user",user);
+        session.setAttribute(Const.CURRENT_USER,user);
+        return res;
+    }
+
+    @RequestMapping(value = "setInfo.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse setInfo(String userEmail, String userNickname, HttpSession session){
+        ServerResponse res = null;
+        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+        if(currentUser == null){
+            res = ServerResponse.createByErrorMessage("Need Login");
+            res.setStatus(ResponseCode.NEED_LOGIN.getCode());
+        }
+        else{
+            res = userService.setInfo(currentUser.getId(), userEmail, userNickname);
+            if(res.isSuccess()){
+                currentUser.setUserEmail(userEmail);
+                currentUser.setUserNickname(userNickname);
+                session.setAttribute(Const.CURRENT_USER, currentUser);
+            }
+        }
         return res;
     }
 }

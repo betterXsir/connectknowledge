@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzh.snails.connectknowledge.dao.FollowerMapper">
+  <resultMap id="BaseResultMap" type="com.hzh.snails.connectknowledge.domain.Follower">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_fan" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_follower" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="follower_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="follower_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, user_fan, user_follower, follower_date, follower_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ck_followers
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ck_followers
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzh.snails.connectknowledge.domain.Follower">
+    insert into ck_followers (ID, user_fan, user_follower, 
+      follower_date, follower_status)
+    values (#{id,jdbcType=BIGINT}, #{userFan,jdbcType=BIGINT}, #{userFollower,jdbcType=BIGINT}, 
+      #{followerDate,jdbcType=TIMESTAMP}, #{followerStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.Follower">
+    insert into ck_followers
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userFan != null">
+        user_fan,
+      </if>
+      <if test="userFollower != null">
+        user_follower,
+      </if>
+      <if test="followerDate != null">
+        follower_date,
+      </if>
+      <if test="followerStatus != null">
+        follower_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userFan != null">
+        #{userFan,jdbcType=BIGINT},
+      </if>
+      <if test="userFollower != null">
+        #{userFollower,jdbcType=BIGINT},
+      </if>
+      <if test="followerDate != null">
+        #{followerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followerStatus != null">
+        #{followerStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.Follower">
+    update ck_followers
+    <set>
+      <if test="userFan != null">
+        user_fan = #{userFan,jdbcType=BIGINT},
+      </if>
+      <if test="userFollower != null">
+        user_follower = #{userFollower,jdbcType=BIGINT},
+      </if>
+      <if test="followerDate != null">
+        follower_date = #{followerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followerStatus != null">
+        follower_status = #{followerStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.Follower">
+    update ck_followers
+    set user_fan = #{userFan,jdbcType=BIGINT},
+      user_follower = #{userFollower,jdbcType=BIGINT},
+      follower_date = #{followerDate,jdbcType=TIMESTAMP},
+      follower_status = #{followerStatus,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -20,4 +20,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    int updateInformation(@Param("id") long ID, @Param("userEmail") String userEmail, @Param("userNickname") String userNickname);
 }

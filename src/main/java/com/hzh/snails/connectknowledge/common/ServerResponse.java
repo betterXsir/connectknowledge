@@ -29,6 +29,10 @@ public class ServerResponse<T> {
         this.data = data;
     }
 
+    public boolean isSuccess(){
+        return status == ResponseCode.SUCCESS.getCode();
+    }
+
     public int getStatus() {
         return status;
     }

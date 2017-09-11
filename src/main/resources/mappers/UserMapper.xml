@@ -103,6 +103,12 @@
       </if>
     </trim>
   </insert>
+  <update id="updateInformation" parameterType="map">
+    UPDATE ck_users
+    SET user_email = #{userEmail, jdbcType=VARCHAR},
+      user_nickname = #{userNickname, jdbcType=VARCHAR}
+    WHERE ID = #{id, jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.hzh.snails.connectknowledge.domain.User">
     update ck_users
     <set>

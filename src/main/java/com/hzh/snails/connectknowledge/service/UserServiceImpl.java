@@ -77,4 +77,13 @@ public class UserServiceImpl {
         }
         return ServerResponse.createByErrorMessage("上传失败");
     }
+
+    public ServerResponse setInfo(long ID, String userEmail, String userNickname){
+        int resultCount = userMapper.updateInformation(ID, userEmail, userNickname);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccess();
+        }
+        else
+            return ServerResponse.crateByError();
+    }
 }
