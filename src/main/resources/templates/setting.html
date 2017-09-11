@@ -100,7 +100,7 @@
                                 昵称
                             </td>
                             <td>
-                                <input type="text" placeholder="请输入昵称" required="required"/>
+                                <input id="inputNickname" type="text" placeholder="请输入昵称" required="required"/>
                             </td>
                         </tr>
                         <tr>
@@ -109,7 +109,7 @@
                             </td>
                             <td>
                                 <input type="button" value="发送" class="btn btn-hollow pull-right" />
-                                <input type="email" placeholder="请输入你的常用邮箱" required="required"/>
+                                <input id="inputEmail" type="email" placeholder="请输入你的常用邮箱" required="required"/>
                             </td>
                         </tr>
                     </table>
@@ -118,9 +118,33 @@
             </div>
         </div>
     </div>
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <span>保存成功</span>
+            </div>
+        </div>
+    </div>
     <script th:inline="javascript">
         function ajax_setInfo() {
-            
+            var data = {"userEmail":$("#inputEmail"), "userNickname":$("#inputNickname")}
+            $.ajax({
+                url:"/user/setInfo.do",
+                data:data,
+                method:"post",
+                dataType:"json",
+                success:function (data) {
+                    if(data.status == 0){
+                        $("#myModal").modal({backdrop:true})
+                    }
+                    else{
+                        alert("保存失败")
+                    }
+                },
+                error:function () {
+                    alert("error")
+                }
+            })
         }
         function ajax_setAvatar() {
             var formData = new FormData();
@@ -132,7 +156,6 @@
                 method:"post",
                 dataType:"json",
                 success:function (data) {
-                    console.log(data);
                     if(data.status == 0) {
                         document.getElementById("avatar-head").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
                         document.getElementById("avatar-content").src("http://ov2ww7h39.bkt.clouddn.com/" + data.data);
