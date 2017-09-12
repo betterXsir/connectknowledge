@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>写文章</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <link th:href="@{~/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{~/css/bootstrap-responsive.css}" rel="stylesheet"/>
+
+    <style>
+        .home-wrap {
+            padding: 9px 0;
+            font-size: 15px;
+            color: #ec7259;
+            border: 1px solid rgba(236, 114, 89, 0.7);
+            border-radius: 20px;
+            diplay: block;
+        }
+
+        .go-home {
+            padding: 9px 0;
+            font-size: 15px;
+            color: #ec7259;
+            margin-left: 86px;
+        }
+
+        .aside {
+            position: relative;
+            background-color: #3f3f3f;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .middle {
+            border-right: 1px solid #d9d9d9;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .main {
+            position: relative;
+            padding: 20px 0 0 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="writer" class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2 aside" style="height: 859px;">
+            <div class="home-wrap">
+                <a th:href="@{~/index}" class="go-home">
+                    <span>回首页</span>
+                </a>
+            </div>
+        </div>
+        <div class="span2 middle" style="height: 859px">
+            <div id="note-list">
+                <div id="new-note">
+                    <a href="#">
+                        <span>新建文章</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="span8 main">
+            <form id="writePost">
+                <input id="inputTitle" type="text" name="title" value="无标题文章"/>
+                <textarea id="md-text" data-url="/post/uploadImage.do" name="postContent" style="height: 700px;">### Hello Editor.md</textarea>
+                <input class="btn btn-success" onclick="ajax_writePost()" value="发布文章"/>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{~/md.editor/dist/index.js}"></script>
+<link th:href="@{~/md.editor/dist/css/editor.css}" rel="stylesheet" />
+<script th:src="@{http://code.jquery.com/jquery.js}"></script>
+<script th:src="@{~/md.editor/src/js/vendor/jquery.ui.widget.js}"></script>
+<script th:src="@{~/md.editor/src/js/jquery.fileupload.js}"></script>
+<script th:src="@{~/js/bootstrap.min.js}"></script>
+<script th:inline="javascript">
+    function ajax_writePost() {
+        var data = {"postTitle": $("#inputTitle").val(), "postContent": $(".preview")[0].innerHTML}
+        $.ajax({
+            url: "/post/writePost.do",
+            method: "post",
+            data: data,
+            success: function (data) {
+                if (data.status == 0) {
+                    alert("success")
+                }
+                else {
+                    alert("fail")
+                }
+            },
+            error: function () {
+                alert("error")
+            }
+        })
+    }
+
+</script>
+</body>
+</html>
