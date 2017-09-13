@@ -71,9 +71,9 @@
 
 
         <table tableName="ck_posts" domainObjectName="Post" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="ck_comments" domainObjectName="Comment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="ck_followers" domainObjectName="Follower" enableCountByExample="false" enableSelectByExample="false" enableDeleteByExample="false" selectByExampleQueryId="false" enableUpdateByExample="false"></table>
-        <table tableName="ck_likes" domainObjectName="Like" enableUpdateByExample="false" enableDeleteByExample="false" selectByExampleQueryId="false" enableSelectByExample="false" enableCountByExample="false"></table>
+        <!--<table tableName="ck_comments" domainObjectName="Comment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="ck_followers" domainObjectName="Follower" enableCountByExample="false" enableSelectByExample="false" enableDeleteByExample="false" selectByExampleQueryId="false" enableUpdateByExample="false"></table>-->
+        <!--<table tableName="ck_likes" domainObjectName="Like" enableUpdateByExample="false" enableDeleteByExample="false" selectByExampleQueryId="false" enableSelectByExample="false" enableCountByExample="false"></table>-->
 
 
         <!-- mybatis插件的搭建 -->

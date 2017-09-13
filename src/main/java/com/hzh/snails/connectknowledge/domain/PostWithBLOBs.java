@@ -7,10 +7,10 @@ public class PostWithBLOBs extends Post {
 
     private String postTitle;
 
-    private String postExcerpt;
+    private String postExcerpt="";
 
-    public PostWithBLOBs(Long id, Long postAuthor, Date postDate, Date postModified, String postStatus, String commentStatus, String postType, String postMimeType, Integer postLabel, Integer postWatchs, Integer postLikes, Integer postComments, String postContent, String postTitle, String postExcerpt) {
-        super(id, postAuthor, postDate, postModified, postStatus, commentStatus, postType, postMimeType, postLabel, postWatchs, postLikes, postComments);
+    public PostWithBLOBs(Long id, Long postAuthor, Date postDate, Date postModified, String postStatus, String commentStatus, String postType, String postMimeType, Integer postLabel, Integer postWatchs, Integer postLikes, Integer postComments, String postName, String postContent, String postTitle, String postExcerpt) {
+        super(id, postAuthor, postDate, postModified, postStatus, commentStatus, postType, postMimeType, postLabel, postWatchs, postLikes, postComments, postName);
         this.postContent = postContent;
         this.postTitle = postTitle;
         this.postExcerpt = postExcerpt;

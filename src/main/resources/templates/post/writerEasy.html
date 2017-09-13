@@ -47,6 +47,14 @@
             overflow-x: hidden;
         }
 
+        .saving-notice {
+            position: fixed;
+            top: 0;
+            right: 7px;
+            z-index: 1040;
+            display: none;
+        }
+
     </style>
 
 </head>
@@ -71,9 +79,10 @@
         </div>
         <div class="span8 main">
             <form id="writePost">
+                <span id="update-notice" class="saving-notice">更新已成功发布</span>
                 <input id="inputTitle" type="text" name="title" value="无标题文章"/>
                 <textarea id="md-text" data-url="/post/uploadImage.do" name="postContent" style="height: 700px;">### Hello Editor.md</textarea>
-                <input class="btn btn-success" onclick="ajax_writePost()" value="发布文章"/>
+                <input id="releasePost" class="btn btn-success" onclick="ajax_writePost()" value="发布文章"/>
             </form>
         </div>
     </div>
@@ -85,6 +94,10 @@
 <script th:src="@{~/md.editor/src/js/jquery.fileupload.js}"></script>
 <script th:src="@{~/js/bootstrap.min.js}"></script>
 <script th:inline="javascript">
+    if([[${session.post}]] != null){
+        document.getElementById("releasePost").setAttribute("value", "更新文章");
+        document.getElementById("releasePost").setAttribute("onclick", "ajax_updatePost()");
+    }
     function ajax_writePost() {
         var data = {"postTitle": $("#inputTitle").val(), "postContent": $(".preview")[0].innerHTML}
         $.ajax({
@@ -93,13 +106,35 @@
             data: data,
             success: function (data) {
                 if (data.status == 0) {
-                    alert("success")
+                    document.getElementById("releasePost").setAttribute("value", "更新文章");
+                    document.getElementById("releasePost").setAttribute("onclick", "ajax_updatePost()");
                 }
                 else {
                     alert("fail")
                 }
             },
             error: function () {
+                alert("error")
+            }
+        })
+    }
+    
+    function ajax_updatePost() {
+        var data = {"postTitle": $("#inputTitle").val(), "postName":[[${session.post.postName}]], "postContent":$(".preview")[0].innerHTML}
+        $.ajax({
+            url:"/post/updatePost.do",
+            method:"post",
+            data:data,
+            success:function (data) {
+                if(data.status == 0) {
+                    var obj = document.getElementById("update-notice")
+                    obj.style.display = "none";
+                }
+                else{
+                    alert(data.msg)
+                }
+            },
+            error:function () {
                 alert("error")
             }
         })

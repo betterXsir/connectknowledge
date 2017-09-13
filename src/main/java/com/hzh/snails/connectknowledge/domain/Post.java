@@ -11,23 +11,25 @@ public class Post {
 
     private Date postModified;
 
-    private String postStatus;
+    private String postStatus="publish";
 
-    private String commentStatus;
+    private String commentStatus="open";
 
-    private String postType;
+    private String postType="post";
 
-    private String postMimeType;
+    private String postMimeType="";
 
-    private Integer postLabel;
+    private Integer postLabel=0;
 
-    private Integer postWatchs;
+    private Integer postWatchs=0;
 
-    private Integer postLikes;
+    private Integer postLikes=0;
 
-    private Integer postComments;
+    private Integer postComments=0;
 
-    public Post(Long id, Long postAuthor, Date postDate, Date postModified, String postStatus, String commentStatus, String postType, String postMimeType, Integer postLabel, Integer postWatchs, Integer postLikes, Integer postComments) {
+    private String postName;
+
+    public Post(Long id, Long postAuthor, Date postDate, Date postModified, String postStatus, String commentStatus, String postType, String postMimeType, Integer postLabel, Integer postWatchs, Integer postLikes, Integer postComments, String postName) {
         this.id = id;
         this.postAuthor = postAuthor;
         this.postDate = postDate;
@@ -40,6 +42,7 @@ public class Post {
         this.postWatchs = postWatchs;
         this.postLikes = postLikes;
         this.postComments = postComments;
+        this.postName = postName;
     }
 
     public Post() {
@@ -141,4 +144,13 @@ public class Post {
     public void setPostComments(Integer postComments) {
         this.postComments = postComments;
     }
+
+    public String getPostName() {
+        return postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName == null ? null : postName.trim();
+    }
+
 }

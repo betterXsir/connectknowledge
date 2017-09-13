@@ -15,6 +15,7 @@
       <arg column="post_watchs" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="post_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="post_comments" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_name" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
@@ -31,6 +32,7 @@
       <arg column="post_watchs" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="post_likes" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="post_comments" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="post_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="post_content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
       <arg column="post_title" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
       <arg column="post_excerpt" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
@@ -38,7 +40,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     ID, post_author, post_date, post_modified, post_status, comment_status, post_type, 
-    post_mime_type, post_label, post_watchs, post_likes, post_comments
+    post_mime_type, post_label, post_watchs, post_likes, post_comments, post_name
   </sql>
   <sql id="Blob_Column_List">
     post_content, post_title, post_excerpt
@@ -60,14 +62,14 @@
       post_modified, post_status, comment_status, 
       post_type, post_mime_type, post_label, 
       post_watchs, post_likes, post_comments, 
-      post_content, post_title, post_excerpt
-      )
-    values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, #{postDate,jdbcType=TIMESTAMP}, 
-      #{postModified,jdbcType=TIMESTAMP}, #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR}, 
+      post_name, post_content, post_title, 
+      post_excerpt)
+    values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, now(),
+      now(), #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR},
       #{postType,jdbcType=VARCHAR}, #{postMimeType,jdbcType=VARCHAR}, #{postLabel,jdbcType=INTEGER}, 
       #{postWatchs,jdbcType=INTEGER}, #{postLikes,jdbcType=INTEGER}, #{postComments,jdbcType=INTEGER}, 
-      #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, #{postExcerpt,jdbcType=LONGVARCHAR}
-      )
+      #{postName,jdbcType=VARCHAR}, #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, 
+      #{postExcerpt,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
     insert into ck_posts
@@ -108,6 +110,9 @@
       <if test="postComments != null">
         post_comments,
       </if>
+      <if test="postName != null">
+        post_name,
+      </if>
       <if test="postContent != null">
         post_content,
       </if>
@@ -126,10 +131,10 @@
         #{postAuthor,jdbcType=BIGINT},
       </if>
       <if test="postDate != null">
-        #{postDate,jdbcType=TIMESTAMP},
+          now(),
       </if>
       <if test="postModified != null">
-        #{postModified,jdbcType=TIMESTAMP},
+          now(),
       </if>
       <if test="postStatus != null">
         #{postStatus,jdbcType=VARCHAR},
@@ -155,6 +160,9 @@
       <if test="postComments != null">
         #{postComments,jdbcType=INTEGER},
       </if>
+      <if test="postName != null">
+        #{postName,jdbcType=VARCHAR},
+      </if>
       <if test="postContent != null">
         #{postContent,jdbcType=LONGVARCHAR},
       </if>
@@ -176,7 +184,7 @@
         post_date = #{postDate,jdbcType=TIMESTAMP},
       </if>
       <if test="postModified != null">
-        post_modified = #{postModified,jdbcType=TIMESTAMP},
+        post_modified = now(),
       </if>
       <if test="postStatus != null">
         post_status = #{postStatus,jdbcType=VARCHAR},
@@ -202,6 +210,9 @@
       <if test="postComments != null">
         post_comments = #{postComments,jdbcType=INTEGER},
       </if>
+      <if test="postName != null">
+        post_name = #{postName,jdbcType=VARCHAR},
+      </if>
       <if test="postContent != null">
         post_content = #{postContent,jdbcType=LONGVARCHAR},
       </if>
@@ -217,8 +228,8 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzh.snails.connectknowledge.domain.PostWithBLOBs">
     update ck_posts
     set post_author = #{postAuthor,jdbcType=BIGINT},
-      post_date = #{postDate,jdbcType=TIMESTAMP},
-      post_modified = #{postModified,jdbcType=TIMESTAMP},
+      post_data = #{postDate,jdbcType=TIMESTAMP},
+      post_modified = now(),
       post_status = #{postStatus,jdbcType=VARCHAR},
       comment_status = #{commentStatus,jdbcType=VARCHAR},
       post_type = #{postType,jdbcType=VARCHAR},
@@ -227,10 +238,18 @@
       post_watchs = #{postWatchs,jdbcType=INTEGER},
       post_likes = #{postLikes,jdbcType=INTEGER},
       post_comments = #{postComments,jdbcType=INTEGER},
+      post_name = #{postName,jdbcType=VARCHAR},
       post_content = #{postContent,jdbcType=LONGVARCHAR},
       post_title = #{postTitle,jdbcType=LONGVARCHAR},
       post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR}
     where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updatePostByName" parameterType="map">
+    update ck_posts
+    set post_content = #{postContent,jdbcType=LONGVARCHAR},
+      post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      post_modified = now()
+    where post_name = #{postName, jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hzh.snails.connectknowledge.domain.Post">
     update ck_posts
@@ -244,7 +263,8 @@
       post_label = #{postLabel,jdbcType=INTEGER},
       post_watchs = #{postWatchs,jdbcType=INTEGER},
       post_likes = #{postLikes,jdbcType=INTEGER},
-      post_comments = #{postComments,jdbcType=INTEGER}
+      post_comments = #{postComments,jdbcType=INTEGER},
+      post_name = #{postName,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

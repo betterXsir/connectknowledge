@@ -1,19 +1,13 @@
 package com.hzh.snails.connectknowledge.service;
 
 import com.google.common.io.Closer;
-import com.google.gson.Gson;
-import com.hzh.snails.connectknowledge.common.QiniuAccessSecret;
 import com.hzh.snails.connectknowledge.common.ServerResponse;
 import com.hzh.snails.connectknowledge.dao.UserMapper;
 import com.hzh.snails.connectknowledge.domain.User;
-import com.hzh.snails.connectknowledge.utils.QiniuUploadAvatar;
+import com.hzh.snails.connectknowledge.utils.QiniuUploadImage;
 import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
-import com.qiniu.util.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,7 +57,7 @@ public class UserServiceImpl {
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         DefaultPutRet putRet = null;
         try {
-            putRet = QiniuUploadAvatar.uploadAvatar(user.getUserAvatar(), bais, "connectknowledge");
+            putRet = QiniuUploadImage.getInstance().uploadAvatar(user.getUserAvatar(), bais);
         }catch (QiniuException var3){
             Response r = var3.response;
             return ServerResponse.createByError(r.toString(),r.bodyString());
